@@ -12,6 +12,7 @@ public class MPXTConsoleLogger implements HttpResponseHandler<String> {
     private static final Logger LOGGER = Logger.getLogger(HttpGetPoller.class.getName());
 
     public void handle(HttpResponse<String> response) {
+
         try {
             JSONObject body = new JSONObject(response.body());
             List<Integer> mpxt = body.getJSONArray("mpxt")
@@ -26,6 +27,7 @@ public class MPXTConsoleLogger implements HttpResponseHandler<String> {
             System.out.println(System.currentTimeMillis() + ", " + vals);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "could not parse MPXT data", e);
+            throw e;
         }
     }
 

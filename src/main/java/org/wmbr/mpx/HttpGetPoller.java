@@ -43,7 +43,7 @@ public class HttpGetPoller {
             try {
                 pollOnce();
                 failures = 0;
-            } catch (IOException | InterruptedException e) {
+            } catch (Exception e) {
                 failures++;
                 LOGGER.log(Level.WARNING, "polling attempt " + failures + " failed", e);
                 if (failures >= maxRetries) {
@@ -54,11 +54,5 @@ public class HttpGetPoller {
         };
 
         scheduler.scheduleAtFixedRate(poller, 0, period, timeUnit);
-        try {
-            scheduler.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        LOGGER.log(Level.INFO, "poller shut down");
     }
 }
