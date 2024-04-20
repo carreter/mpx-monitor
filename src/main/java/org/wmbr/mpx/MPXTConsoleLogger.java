@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MPXTConsoleLogger implements HttpResponseHandler<String> {
@@ -15,17 +14,17 @@ public class MPXTConsoleLogger implements HttpResponseHandler<String> {
     public void handle(HttpResponse<String> response) {
         try {
             JSONObject body = new JSONObject(response.body());
-            List<Long> mpxt = body.getJSONArray("mpxt")
+            List<Integer> mpxt = body.getJSONArray("mpxt")
                     .toList()
                     .stream()
-                    .map((o) -> (Long) o)
+                    .map((o) -> (Integer) o)
                     .collect(Collectors.toList());
             String vals = mpxt
                     .stream()
                     .map((l) -> l.toString())
                     .collect(Collectors.joining(", "));
             System.out.println(System.currentTimeMillis() + ", " + vals);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "could not parse MPXT data", e);
         }
     }
